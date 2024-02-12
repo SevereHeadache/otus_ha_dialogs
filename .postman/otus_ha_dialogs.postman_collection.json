@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "fba9754b-d5ef-417f-890c-d1b2f4446ffe",
+		"name": "otus_ha_dialogs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29513074"
+	},
+	"item": [
+		{
+			"name": "Send",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "hadialogs-version",
+						"value": "v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "text",
+							"value": "message",
+							"type": "text"
+						},
+						{
+							"key": "from",
+							"value": "1ca818d0-6e81-449d-bd39-df9181e4bf3e",
+							"type": "text"
+						},
+						{
+							"key": "to",
+							"value": "83195aef-a98b-471f-8be4-4ce2daab18da",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8889/api/send",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8889",
+					"path": [
+						"api",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "hadialogs-version",
+						"value": "v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8889/api/list/1ca818d0-6e81-449d-bd39-df9181e4bf3e/83195aef-a98b-471f-8be4-4ce2daab18da",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8889",
+					"path": [
+						"api",
+						"list",
+						"1ca818d0-6e81-449d-bd39-df9181e4bf3e",
+						"83195aef-a98b-471f-8be4-4ce2daab18da"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
