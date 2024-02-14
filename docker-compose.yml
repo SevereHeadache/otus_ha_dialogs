@@ -64,6 +64,17 @@ services:
     environment: *AUTH
     networks:
       - internal
+  tarantool:
+    image: "tarantool/tarantool:3"
+    environment:
+      TARANTOOL_USER_NAME: "${DB_USER}"
+      TARANTOOL_USER_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - ./database/tarantool/app.lua:/opt/tarantool/app.lua
+    command: ["tarantool", "/opt/tarantool/app.lua"]
+    networks:
+      - internal
+
 
 volumes:
   healthcheck-volume:

@@ -9,7 +9,7 @@ $klein = new \Klein\Klein();
 
 $versions = [
     'v1',
-    // 'v2',
+    'v2',
 ];
 
 $getController = function (Request $request, Response $response) use ($versions) {
