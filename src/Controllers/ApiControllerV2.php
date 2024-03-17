@@ -2,17 +2,16 @@
 
 namespace SevereHeadache\OtusHaDialogs\Controllers;
 
+use GuzzleHttp\Client as GuzzleHttpClient;
 use Klein\Response;
 use Klein\Request;
 use Ramsey\Uuid\Rfc4122\UuidV4;
+use SevereHeadache\OtusHaDialogs\Components\RMQClient;
 use SevereHeadache\OtusHaDialogs\Controllers\Exceptions\IncorectRequestException;
 use Tarantool\Client\Client;
 
 class ApiControllerV2
 {
-    /**
-     * @todo Wrap in transaction
-     */
     public function send(Request $request, Response $response)
     {
         $attributes = $request->paramsPost();
@@ -56,6 +55,12 @@ class ApiControllerV2
             $attributes['text'],
         );
 
+        $client = new RMQClient();
+        $client->push(RMQClient::QUEUE_SEND, [
+            'userId' => $attributes['to'],
+            'messageId' => $messageId,
+        ]);
+
         return $response->json((object) ['id' => $messageId]);
     }
 
@@ -87,5 +92,15 @@ class ApiControllerV2
         }
 
         return $response->json($messages);
+    }
+
+    public function markAsRead(Request $request, Response $response)
+    {
+        $id = $request->paramsNamed()->get('user_id');
+        $client = new GuzzleHttpClient(['base_uri' => env('COUNTERS_URI')]);
+        $result = $client->request('POST', "markAsRead/$id");
+        $data = json_decode($result->getBody()->getContents(), true);
+
+        return $response->json($data);
     }
 }

@@ -61,4 +61,10 @@ $klein->respond('GET', '/api/list/[:user_id]/[:with_id]', function (...$args) us
     return $callController("$controller::list", ...$args);
 });
 
+$klein->respond('POST', '/api/markAsRead/[:user_id]', function (...$args) use ($getController, $callController) {
+    $controller = $getController($args[0], $args[1]);
+
+    return $callController("$controller::markAsRead", ...$args);
+});
+
 $klein->dispatch();

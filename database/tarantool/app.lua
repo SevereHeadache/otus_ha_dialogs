@@ -18,10 +18,11 @@ box.space.dialog_messages:format({
     {name = 'from', type = 'string'},
     {name = 'to', type = 'string'},
     {name = 'text', type = 'string'},
-    {name = 'created_at', type = 'number'}
+    {name = 'created_at', type = 'number'},
+    {name = 'state', type = 'number'}
 })
 box.space.dialog_messages:create_index('primary', {parts = {'id'}, if_not_exists = true})
-box.space.dialog_messages:create_index('dialog', {parts = {'dialog_id'}, unique = false, if_not_exists = true})
+box.space.dialog_messages:create_index('dialog', {parts = {'dialog_id', 'state'}, unique = false, if_not_exists = true})
 
 -- Get dialog between users
 function getDialog(user1, user2)
@@ -38,14 +39,24 @@ function newDialog(id, user1, user2)
     box.space.dialogs:insert{id, user1, user2}
 end
 
--- Create dialog message
+-- Create dialog message ("sent" state)
 function newMessage(id, dialog_id, from, to, text)
-    box.space.dialog_messages:insert{id, dialog_id, from, to, text, os.time(os.date("!*t"))}
+    box.space.dialog_messages:insert{id, dialog_id, from, to, text, os.time(os.date("!*t")), 0}
+end
+
+-- Set message state "delivered"
+function messageDelivered(id)
+    box.space.dialog_messages:update(id, {{'=', 7, 1}})
+end
+
+-- Delete message
+function deleteMessage(id)
+    box.space.dialog_messages:delete(id)
 end
 
 -- List dialog messages (and sort)
 function listMessages(dialog_id)
-    messages = box.space.dialog_messages.index.dialog:select{dialog_id}
+    messages = box.space.dialog_messages.index.dialog:select{dialog_id, 1}
     table.sort(messages, function(a, b) 
         return a[6] < b[6]
     end)

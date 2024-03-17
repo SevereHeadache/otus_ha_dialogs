@@ -12,7 +12,9 @@
         "vlucas/phpdotenv": "^5.5",
         "ramsey/uuid": "^4.7",
         "nesbot/carbon": "^2.70",
-        "tarantool/client": "^0.10"
+        "tarantool/client": "^0.10",
+        "php-amqplib/php-amqplib": "^3.6",
+        "guzzlehttp/guzzle": "^7.8"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",
